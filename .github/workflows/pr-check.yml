@@ -22,5 +22,7 @@ jobs:
           path: public-security-workflows
 
       - name: Semgrep code and dependency scan
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
         run: |
-          semgrep scan --exclude=public-security-workflows --config auto
+          semgrep ci --exclude=public-security-workflows
