@@ -1,0 +1,26 @@
+on:
+  workflow_call:
+
+jobs:
+  pr-check:
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    permissions:
+      contents: read
+    if: (github.actor != 'dependabot[bot]')
+
+    steps:
+      - name: Checkout the repo being scanned
+        uses: actions/checkout@v4
+
+      - name: Checkout this repo into the workspace
+        uses: actions/checkout@v4
+        with:
+          repository: Basis-Theory/public-security-workflows
+          ref: master
+          path: public-security-workflows
+
+      - name: Semgrep code and dependency scan
+        run: |
+          semgrep scan --exclude=public-security-workflows --config auto
